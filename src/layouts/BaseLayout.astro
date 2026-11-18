@@ -1,0 +1,35 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { site } from '../config';
+import { jsonLd } from '../lib/content';
+import '../styles/global.css';
+import 'katex/dist/katex.min.css';
+interface Props { title: string; description: string; article?: boolean; noindex?: boolean; structuredData?: Record<string, unknown>; }
+const { title, description, article = false, noindex = false, structuredData } = Astro.props;
+const canonical = import.meta.env.SITE_CONFIGURED && Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
+const launchReady = import.meta.env.PUBLIC_LAUNCH_READY === 'true';
+const image = import.meta.env.SITE_CONFIGURED && Astro.site ? new URL('/images/social-card.png', Astro.site).href : '/images/social-card.png';
+const person = !site.profileIsPlaceholder && canonical ? { '@context': 'https://schema.org', '@type': 'Person', name: site.name, url: Astro.site?.href, sameAs: Object.values(site.socials).filter(Boolean) } : undefined;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script is:inline>try { const p = localStorage.getItem('theme'); document.documentElement.dataset.theme = p === 'light' || p === 'dark' ? p : matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; } catch { document.documentElement.dataset.theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; }</script>
+    <title>{title} | {site.name}</title><meta name="description" content={description} />
+    <meta name="robots" content={noindex || !launchReady || site.profileIsPlaceholder ? 'noindex, nofollow' : 'index, follow'} />
+    {canonical && <link rel="canonical" href={canonical} />}
+    <meta property="og:type" content={article ? 'article' : 'website'} /><meta property="og:title" content={title} /><meta property="og:description" content={description} />
+    <meta property="og:site_name" content={site.name} />{canonical && <meta property="og:url" content={canonical} />}<meta property="og:image" content={image} /><meta property="og:image:alt" content="A personal portfolio and notebook — data, code, curiosity" />
+    <meta name="twitter:card" content="summary_large_image" /><meta name="twitter:title" content={title} /><meta name="twitter:description" content={description} /><meta name="twitter:image" content={image} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" /><link rel="alternate" type="application/rss+xml" title={`${site.name} — Blog`} href="/rss.xml" />
+    <meta name="theme-color" content="#142D4E" />
+    {person && <script type="application/ld+json" set:html={jsonLd(person)} />}
+    {structuredData && <script type="application/ld+json" set:html={jsonLd(structuredData)} />}
+  </head>
+  <body>
+    {site.profileIsPlaceholder && <div class="preview-note">Portfolio preview <span aria-hidden="true">·</span> Identity and profile content are placeholders.</div>}
+    <Header /><main id="main" tabindex="-1"><slot /></main><Footer />
+  </body>
+</html>

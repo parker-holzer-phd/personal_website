@@ -1,0 +1,29 @@
+---
+import { navigation, site } from '../config';
+import ThemeToggle from './ThemeToggle.astro';
+const path = Astro.url.pathname;
+---
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="/" class="wordmark" aria-label={`${site.name} home`}><span class="monogram" aria-hidden="true">{site.initials}<span>.</span></span><span>{site.name}</span></a>
+    <nav id="main-nav" aria-label="Main navigation">
+      {navigation.map(({ href, label }) => <a href={href} aria-current={(href === '/' ? path === '/' : path.startsWith(href)) ? 'page' : undefined}>{label}</a>)}
+    </nav>
+    <div class="header-actions"><ThemeToggle /><button id="menu-toggle" class="menu-toggle" type="button" aria-expanded="false" aria-controls="main-nav">Menu <span aria-hidden="true">☰</span></button></div>
+  </div>
+</header>
+<script>
+  const menu = document.querySelector<HTMLButtonElement>('#menu-toggle');
+  const nav = document.querySelector<HTMLElement>('#main-nav');
+  const close = () => { menu?.setAttribute('aria-expanded', 'false'); nav?.classList.remove('is-open'); };
+  document.documentElement.classList.add('js');
+  menu?.addEventListener('click', () => {
+    const open = menu.getAttribute('aria-expanded') !== 'true';
+    menu.setAttribute('aria-expanded', String(open)); nav?.classList.toggle('is-open', open);
+    if (open) nav?.querySelector<HTMLAnchorElement>('a')?.focus();
+  });
+  document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && menu?.getAttribute('aria-expanded') === 'true') { close(); menu.focus(); } });
+  document.addEventListener('click', (event) => { if (event.target instanceof Node && !event.target.parentElement?.closest('.site-header')) close(); });
+  matchMedia('(min-width: 980px)').addEventListener('change', close);
+</script>

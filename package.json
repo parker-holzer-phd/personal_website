@@ -1,0 +1,32 @@
+{
+  "name": "personal-website",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.23.4"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "check": "astro check",
+    "build": "astro build && node scripts/verify-build.mjs",
+    "preview": "astro preview",
+    "test": "node --test tests/*.test.mjs",
+    "test:browser": "playwright test"
+  },
+  "dependencies": {
+    "astro": "7.4.13",
+    "@astrojs/sitemap": "latest",
+    "@astrojs/rss": "latest",
+    "remark-math": "latest",
+    "rehype-katex": "latest",
+    "katex": "latest",
+    "@astrojs/markdown-remark": "latest"
+  },
+  "devDependencies": {
+    "@astrojs/check": "latest",
+    "typescript": "latest",
+    "@playwright/test": "latest",
+    "@axe-core/playwright": "latest"
+  }
+}

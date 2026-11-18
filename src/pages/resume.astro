@@ -1,0 +1,34 @@
+---
+import { existsSync } from 'node:fs';
+import { resolve } from 'node:path';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageIntro from '../components/PageIntro.astro';
+import { site } from '../config';
+const hasPdf = existsSync(resolve('public/resume.pdf'));
+const sections = [
+  { label: 'Experience', entries: site.resume.experience },
+  { label: 'Education', entries: site.resume.education },
+  { label: 'Mentoring', entries: site.resume.teaching },
+  { label: 'Awards', entries: site.resume.awards },
+].filter(({ entries }) => entries.length > 0);
+---
+<BaseLayout title="Resume" description="Parker Holzer’s experience in production AI and machine learning, education, technical skills, mentorship, and awards.">
+  <div class="container resume-container">
+    <PageIntro eyebrow="Experience & perspective" title={site.fullName} description={site.tagline}>
+      <p class="resume-contact">{site.location} · <a href={`mailto:${site.email}`}>{site.email}</a></p>
+      {hasPdf && <div class="button-row"><a class="button primary" href="/resume.pdf" download>Download resume PDF <span aria-hidden="true">↓</span></a></div>}
+    </PageIntro>
+    <div class="content-section">
+      {sections.map(({ label, entries }) => <section class="resume-section">
+        <h2>{label}</h2>
+        <div>{entries.map((entry) => <div class="resume-entry">
+          <h3>{entry.title}</h3><p class="period">{entry.period}</p><p>{entry.description}</p>
+          {entry.highlights?.length && <ul>{entry.highlights.map((highlight) => <li>{highlight}</li>)}</ul>}
+        </div>)}</div>
+      </section>)}
+      <section class="resume-section"><h2>Skills & methods</h2><div>{site.resume.skills.map((skill) => <p class="muted">{skill}</p>)}</div></section>
+      <p class="muted">Research papers and citation details are available in the <a href="/publications/">publications archive</a>.</p>
+      {!hasPdf && <p class="muted">A downloadable PDF will be available when the owner supplies a resume.</p>}
+    </div>
+  </div>
+</BaseLayout>

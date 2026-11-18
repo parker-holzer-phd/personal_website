@@ -1,0 +1,11 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageIntro from '../../components/PageIntro.astro';
+import BlogCard from '../../components/BlogCard.astro';
+import FilterBar from '../../components/FilterBar.astro';
+import { publishedPosts } from '../../lib/content';
+const posts = await publishedPosts();
+const categories = [...new Set(posts.map((post) => post.data.category))].sort();
+const tags = [...new Set(posts.flatMap((post) => post.data.tags))].sort();
+---
+<BaseLayout title="Blog" description="A notebook on artificial intelligence, statistics, software, science, and personal interests."><div class="container"><PageIntro eyebrow="Notes, questions & explanations" title="An open notebook." description="Making sense of things, one idea at a time. Notes on data, code, and the interesting spaces in between." /><section class="content-section" aria-label="Article collection">{posts.some((p) => p.data.sample) && <p class="placeholder-note">These sample articles demonstrate the reading experience. Owner-authored writing will replace them; drafts are never included here.</p>}<FilterBar kind="blog" options={categories} tags={tags} /><div class="blog-grid">{posts.map((post) => <BlogCard post={post} />)}</div>{!posts.length && <p class="empty-state">No published articles yet. Check back soon or subscribe to the <a href="/rss.xml">RSS feed</a>.</p>}</section></div></BaseLayout>

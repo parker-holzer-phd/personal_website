@@ -1,0 +1,28 @@
+---
+import { Picture } from 'astro:assets';
+import portrait from '../assets/photos/parker-portrait.jpg';
+import family from '../assets/photos/holzer-family.jpg';
+import { site } from '../config';
+
+interface Props {
+  kind: 'portrait' | 'family';
+  sizes: string;
+  class?: string;
+  priority?: boolean;
+}
+const { kind, sizes, class: className, priority = false } = Astro.props;
+const source = kind === 'portrait' ? portrait : family;
+---
+<Picture
+  src={source}
+  alt={site.photos[kind].alt}
+  widths={kind === 'portrait' ? [320, 640, 960, 1360] : [480, 800, 1200, 1600]}
+  sizes={sizes}
+  formats={['avif', 'webp']}
+  fallbackFormat="jpg"
+  quality={85}
+  loading={priority ? 'eager' : 'lazy'}
+  fetchpriority={priority ? 'high' : 'auto'}
+  decoding="async"
+  class={className}
+/>

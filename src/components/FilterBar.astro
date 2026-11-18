@@ -1,0 +1,37 @@
+---
+interface Props { kind: 'projects' | 'blog'; options: string[]; tags?: string[]; }
+const { kind, options, tags = [] } = Astro.props;
+---
+<div class="filter-bar" data-filter-controls hidden>
+  <div class="filter-inputs"><div class="search-field"><label class="sr-only" for="content-search">Search {kind}</label><span aria-hidden="true">⌕</span><input type="search" id="content-search" placeholder={`Search ${kind}…`} /></div>
+  {tags.length > 0 && <div class="tag-select"><label for="tag-filter">Tag</label><select id="tag-filter"><option value="">All tags</option>{tags.map((tag) => <option>{tag}</option>)}</select></div>}</div>
+  <div class="filter-buttons" role="group" aria-label={kind === 'blog' ? 'Filter by category' : 'Filter by topic'}><button type="button" class="filter-button" aria-pressed="true" data-value="">All {kind === 'blog' ? 'articles' : 'projects'}</button>{options.map((value) => <button type="button" class="filter-button" aria-pressed="false" data-value={value}>{value}</button>)}</div>
+  <p class="filter-status" data-filter-status aria-live="polite" role="status"></p>
+</div>
+<p class="empty-state" data-filter-empty hidden>No matches. Try a different search or choose another filter.</p>
+<script>
+  const controls = document.querySelector<HTMLElement>('[data-filter-controls]');
+  if (controls) {
+    controls.hidden = false;
+    const input = controls.querySelector<HTMLInputElement>('input');
+    const tags = controls.querySelector<HTMLSelectElement>('select');
+    const buttons = [...controls.querySelectorAll<HTMLButtonElement>('[data-value]')];
+    const items = [...document.querySelectorAll<HTMLElement>('[data-filter-item]')];
+    let category = '';
+    const update = () => {
+      const query = input?.value.trim().toLowerCase() || '';
+      let visible = 0;
+      items.forEach((item) => {
+        const itemTags = JSON.parse(item.dataset.tags || '[]') as string[];
+        const match = (item.dataset.search || '').includes(query) && (!category || item.dataset.category === category || itemTags.includes(category)) && (!tags?.value || itemTags.includes(tags.value));
+        item.hidden = !match; if (match) visible++;
+      });
+      const status = controls.querySelector('[data-filter-status]');
+      if (status) status.textContent = `${visible} ${visible === 1 ? 'result' : 'results'}`;
+      const empty = document.querySelector<HTMLElement>('[data-filter-empty]'); if (empty) empty.hidden = visible > 0;
+    };
+    input?.addEventListener('input', update); tags?.addEventListener('change', update);
+    buttons.forEach((button) => button.addEventListener('click', () => { category = button.dataset.value || ''; buttons.forEach((other) => other.setAttribute('aria-pressed', String(other === button))); update(); }));
+    update();
+  }
+</script>

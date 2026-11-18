@@ -1,0 +1,7 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageIntro from '../components/PageIntro.astro';
+import { site } from '../config';
+const channels = [{ name: 'Email', url: site.email ? `mailto:${site.email}` : '', description: 'For a conversation, a question, or a possible collaboration.', label: site.email || 'Email address not supplied' }, { name: 'Google Scholar', url: site.socials.scholar, description: 'Research publications and the academic side of my work.', label: 'Google Scholar profile not supplied' }, { name: 'LinkedIn', url: site.socials.linkedin, description: 'Professional background and connections.', label: 'LinkedIn profile not supplied' }];
+---
+<BaseLayout title="Contact" description="Contact options for questions, ideas, and potential collaborations."><div class="container"><PageIntro eyebrow="Let’s connect" title="Start a conversation." description="Have an interesting question or an idea to explore? This is the place to reach out." /><div class="content-section"><div class="contact-grid">{channels.map((channel) => <section class="contact-card"><h2>{channel.name}</h2><p>{channel.description}</p>{channel.url ? <a href={channel.url}>{channel.name === 'Email' ? channel.label : `Visit ${channel.name} profile`} ↗</a> : <p class="sample-label">[Placeholder] {channel.label}</p>}</section>)}</div>{!channels.some((channel) => channel.url) && <p class="placeholder-note" style="margin-top:30px">Contact details have not been supplied. No messages are collected by this website.</p>}</div></div></BaseLayout>

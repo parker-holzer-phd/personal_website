@@ -1,0 +1,12 @@
+---
+import { render, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { publishedPosts, formatDate, readingTime } from '../../lib/content';
+import { site } from '../../config';
+export async function getStaticPaths() { return (await publishedPosts()).map((post) => ({ params: { slug: post.id }, props: { post } })); }
+interface Props { post: CollectionEntry<'blog'>; }
+const { post } = Astro.props; const { Content, headings } = await render(post);
+const data = post.data;
+const structuredData = !data.sample && !site.profileIsPlaceholder && import.meta.env.SITE_CONFIGURED && Astro.site ? { '@context': 'https://schema.org', '@type': 'BlogPosting', headline: data.title, description: data.description, datePublished: data.pubDate.toISOString(), dateModified: (data.updatedDate || data.pubDate).toISOString(), url: new URL(`/blog/${post.id}/`, Astro.site).href, author: { '@type': 'Person', name: site.name } } : undefined;
+---
+<BaseLayout title={data.title} description={data.description} article noindex={data.sample} structuredData={structuredData}><div class="container"><header class="article-header"><a class="back-link" href="/blog/">← Back to the notebook</a><p class="eyebrow">{data.category}</p><h1>{data.title}</h1><p class="lede">{data.description}</p><div class="article-meta"><time datetime={data.pubDate.toISOString()}>{formatDate(data.pubDate)}</time><span>{readingTime(post.body)} min read</span>{data.updatedDate && <span>Updated {formatDate(data.updatedDate)}</span>}{data.sample && <span class="sample-label">Sample article · illustrative content</span>}</div><div class="tags">{data.tags.map((tag) => <span>{tag}</span>)}</div></header>{data.sample && <p class="placeholder-note">This is sample editorial content for the website template, not a claim about the owner's work or experience.</p>}{data.image && <img src={data.image} alt={data.imageAlt || ''} width="850" height="440" />}<div class="article-layout"><article class="prose"><Content /><hr /><p><a href="/blog/">← Explore more writing</a></p></article>{headings.some((h) => h.depth === 2) && <nav class="toc" aria-label="On this page"><h2>On this page</h2><ul>{headings.filter((h) => h.depth === 2).map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ul></nav>}</div></div></BaseLayout>

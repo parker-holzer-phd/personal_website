@@ -1,0 +1,13 @@
+---
+import { render, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectVisual from '../../components/ProjectVisual.astro';
+import { publishedProjects } from '../../lib/content';
+import { site } from '../../config';
+export async function getStaticPaths() { return (await publishedProjects()).map((project) => ({ params: { slug: project.id }, props: { project } })); }
+interface Props { project: CollectionEntry<'projects'>; }
+const { project } = Astro.props; const { Content } = await render(project);
+const data = project.data;
+const structuredData = !data.sample && !site.profileIsPlaceholder && import.meta.env.SITE_CONFIGURED && Astro.site ? { '@context': 'https://schema.org', '@type': 'CreativeWork', name: data.title, description: data.description, url: new URL(`/projects/${project.id}/`, Astro.site).href, author: { '@type': 'Person', name: site.name } } : undefined;
+---
+<BaseLayout title={data.title} description={data.description} noindex={data.sample} structuredData={structuredData}><div class="container"><header class="article-header"><a class="back-link" href="/projects/">← All projects</a><p class="eyebrow">{data.sample ? 'Sample case study' : 'Project case study'}</p><h1>{data.title}</h1><p class="lede">{data.description}</p><div class="tags">{data.tags.map((tag) => <span>{tag}</span>)}</div></header>{data.sample && <p class="placeholder-note">Sample project. Role, implementation details, screenshots, and results must be supplied or verified by the owner.</p>}<dl class="detail-meta"><div><dt>Role</dt><dd>{data.role}</dd></div><div><dt>Status</dt><dd>{data.status}</dd></div><div><dt>Technologies</dt><dd>{data.technologies.join(' · ')}</dd></div></dl><div class="detail-visual">{data.image ? <img src={data.image} alt={data.imageAlt || 'Project illustration'} width="850" height="440" /> : <ProjectVisual variant={data.visual} />}</div><div class="content-section"><div class="prose"><Content /></div>{data.links.length > 0 && <div class="button-row">{data.links.map((link) => <a class="button" href={link.url}>{link.label} ↗</a>)}</div>}</div></div></BaseLayout>
