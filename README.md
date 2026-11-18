@@ -114,45 +114,57 @@ Copy `src/content/publications/example.md` and supply verified title, descriptio
 
 Only the menu, theme toggle, and filters require small browser scripts. The site uses system fonts and no third-party requests, analytics, accounts, paid services, or notification integration. Local-storage errors do not prevent theme switching; system preference is used until the user chooses a theme. Motion preferences are respected.
 
-## GitHub and Cloudflare Pages
+## GitHub and Cloudflare deployment
 
-The project is initialized as a separate local Git repository with a `main` branch. The parent plan and downloaded tooling remain outside that repository. No GitHub remote, hosted repository, or Cloudflare project has been created.
+The dedicated repository is [parker-holzer-phd/personal_website](https://github.com/parker-holzer-phd/personal_website), using the `main` branch. The parent workspace, plan, and downloaded tooling stay outside this repository.
 
-Create an empty dedicated GitHub repository, then run from this directory, replacing the remote with your actual URL:
+### Existing Cloudflare Workers project
 
-```sh
-git add .
-git commit -m "Build personal portfolio website"
-git remote add origin https://github.com/YOUR_ACCOUNT/YOUR_REPOSITORY.git
-git push -u origin main
-```
+The connected Cloudflare project is `parker-holzer-personal-website`. It uses **Workers Builds**. The tracked `wrangler.jsonc` explicitly deploys the prebuilt `dist/` directory as static assets, with directory-index routing and the custom `404.html` page.
 
-In Cloudflare's **Workers & Pages**, create a **Pages** application and import that GitHub repository. Use:
+Keep these settings in Cloudflare's **Settings → Build**:
 
 | Setting | Value |
 | --- | --- |
+| Repository | `parker-holzer-phd/personal_website` |
 | Production branch | `main` |
-| Framework preset | Astro |
 | Build command | `npm run build` |
-| Build output directory | `dist` |
-| Root directory | Leave empty when pushing this project's repository |
-| Node version | `22.23.5` (set `NODE_VERSION` if necessary; `.node-version` is included) |
-| Production `SITE_URL` | The actual assigned `https://PROJECT.pages.dev` URL |
-| `PUBLIC_LAUNCH_READY` | `false` until identity and content are ready, then `true` |
+| Deploy command | `npx wrangler deploy` (or `npm run deploy`) |
+| Root directory | Leave empty |
+| Build variable `NODE_VERSION` | `22.23.5` |
+| Build variable `SITE_URL` | The actual production `https://…workers.dev` URL or custom domain |
+| Build variable `PUBLIC_LAUNCH_READY` | `false` for initial review; `true` when ready for search indexing |
 
-If you instead commit the entire parent workspace as your repository, set the Cloudflare root directory to `personal-website` and ignore the parent `.tools` directory. The preferred workflow is the separate repository already initialized here.
+The build command generates and validates the static website once. The deploy command uploads that output. There is no custom build command in `wrangler.jsonc`, so deployment does not rebuild or reconfigure Astro. Wrangler is pinned to `4.164.0`, matching the version in the reported deployment log.
 
-Astro is explicitly configured with `output: 'static'`. **No Cloudflare adapter, Worker, Functions, database, or secret is required.** The current Astro docs emphasize Workers for new projects, but Cloudflare still documents Pages' Git-based Astro workflow. This project preserves the plan's Pages choice.
+The website stays entirely static: no Astro Cloudflare adapter, server script, database, session storage, or Cloudflare Images binding is required. Photos are optimized at build time. `wrangler.jsonc` names the existing Worker from the log, so deployment targets the same project.
 
-Cloudflare builds each push on `main` and creates preview deployments for enabled branches/PRs. Review a preview before merging. Restrict preview access in Cloudflare if the source content is private; `noindex` does not provide access control. Set preview `PUBLIC_LAUNCH_READY=false`. If `SITE_URL` is omitted, Cloudflare's `CF_PAGES_URL` supplies the deployment origin. Explicitly set the production `SITE_URL` for stable canonical URLs; preview deployments can use their own `CF_PAGES_URL` by omitting `SITE_URL` in preview variables.
+The original deployment failed because no Wrangler configuration existed. Wrangler automatically ran `astro add cloudflare`, rebuilt the website into `dist/client/`, and then the build verifier correctly reported that the expected `dist/index.html` was missing. The explicit asset configuration prevents that automatic framework conversion and preserves the existing `dist/` output contract.
 
-The build always generates `/rss.xml`, `/sitemap-index.xml`, and `/sitemap-0.xml`. With no configured origin, local builds use the real development origin `http://localhost:4321` for these feeds/maps and omit page canonical tags. This fallback is only for local work. Set `SITE_URL` before uploading `dist` outside Cloudflare. Never deploy localhost URLs. Unknown profile details keep HTML and robots nonindexable until **both** `profileIsPlaceholder: false` and `PUBLIC_LAUNCH_READY=true` are set.
+Validate locally before pushing:
 
-Deploying a static build to Cloudflare Pages uses no database and may fit free hosting allowances. Check current provider limits and any domain pricing before purchase; no paid service has been added.
+```sh
+npm run check
+npm run build
+npm test
+npm run check:deploy
+```
+
+`check:deploy` performs Wrangler's dry run; it validates configuration without publishing. `npm run deploy` performs an actual deployment using your Cloudflare authentication, after you have run `npm run build`. The Git integration handles authentication when Cloudflare runs these commands.
+
+After the fix is pushed, use the latest commit in Cloudflare's build history. Retrying an older failed commit will still use that commit's files. Automatic Git deployments normally start on pushes to `main`.
+
+Workers Builds does not supply `CF_PAGES_URL`; set `SITE_URL` as a **build** variable to the exact production address displayed in your Cloudflare dashboard. Redeploy after changing it so canonical links, RSS, sitemap, and sharing metadata use the right origin. Without a configured origin, local builds use `http://localhost:4321` for feeds and maps and omit page canonical tags. `PUBLIC_LAUNCH_READY=false` keeps indexing disabled while the site remains accessible by URL.
+
+### Cloudflare Pages alternative
+
+The same static build is also deployable to Pages, as proposed in the original plan. For a separate Pages application, import this repository, use branch `main`, framework preset Astro, build command `npm run build`, output directory `dist`, and an empty root directory. Set `NODE_VERSION=22.23.5` and use the real `*.pages.dev` URL for `SITE_URL`. A Pages deployment publishes the build output directly.
 
 ### Custom domain later
 
-After the Pages deployment works, open its **Custom domains**, add a domain you own, and follow Cloudflare's DNS/HTTPS instructions. Update production `SITE_URL` to the final HTTPS domain and rebuild. Verify canonical URLs, sitemap, RSS, and social images use that domain. Configure redirects in Cloudflare if you want only the custom domain to be indexed; avoid a site-wide redirect in the shared artifact that would also redirect preview deployments.
+After the deployment works, add a domain you own in the Cloudflare project's domain settings and follow the DNS/HTTPS instructions. Set production `SITE_URL` to the final HTTPS domain and rebuild. Verify canonical URLs, sitemap, RSS, and social images use that domain.
+
+No paid service has been added. Check current provider limits and domain pricing before purchasing anything.
 
 ## Remaining owner information before public launch
 
@@ -164,7 +176,7 @@ Still useful:
 - HearYe’s verified role, technology stack, results, screenshots, and links; details for any additional hands-on projects.
 - A personal GitHub profile URL, if you want one displayed.
 - Finished blog articles to replace or remove the labeled sample notes.
-- The production hostname and GitHub/Cloudflare account setup.
+- The final production hostname and a successful Cloudflare deployment.
 
 Review the remaining sample/placeholder content, configure `SITE_URL`, and enable indexing with `PUBLIC_LAUNCH_READY=true` when ready. The real profile already has `profileIsPlaceholder: false`; the launch flag remains disabled by default. Check every page in light/dark themes, on a phone, and with keyboard navigation before launch.
 
@@ -182,3 +194,9 @@ Verified during implementation on November 18, 2026:
 - [Cloudflare custom domains](https://developers.cloudflare.com/pages/configuration/custom-domains/)
 
 Astro 7.4.13 is pinned. Its official Unified Markdown processor is explicitly installed for compatible remark-math/rehype-katex rendering. Exact resolved dependency versions are in `package-lock.json`; use `npm ci` for reproducible installations.
+
+Deployment references checked while fixing the reported build failure:
+
+- [Workers static assets configuration](https://developers.cloudflare.com/workers/static-assets/binding/)
+- [Workers Builds settings](https://developers.cloudflare.com/workers/ci-cd/builds/configuration/)
+- [Wrangler automatic framework setup](https://developers.cloudflare.com/workers/wrangler/commands/workers/#deploy)
