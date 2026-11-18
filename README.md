@@ -132,7 +132,7 @@ Keep these settings in Cloudflare's **Settings → Build**:
 | Deploy command | `npx wrangler deploy` (or `npm run deploy`) |
 | Root directory | Leave empty |
 | Build variable `NODE_VERSION` | `22.23.5` |
-| Build variable `SITE_URL` | The actual production `https://…workers.dev` URL or custom domain |
+| Build variable `SITE_URL` | Optional override; defaults to `https://parker-holzer-personal-website.holzerparker.workers.dev` |
 | Build variable `PUBLIC_LAUNCH_READY` | `false` for initial review; `true` when ready for search indexing |
 
 The build command generates and validates the static website once. The deploy command uploads that output. There is no custom build command in `wrangler.jsonc`, so deployment does not rebuild or reconfigure Astro. Wrangler is pinned to `4.164.0`, matching the version in the reported deployment log.
@@ -154,7 +154,7 @@ npm run check:deploy
 
 After the fix is pushed, use the latest commit in Cloudflare's build history. Retrying an older failed commit will still use that commit's files. Automatic Git deployments normally start on pushes to `main`.
 
-Workers Builds does not supply `CF_PAGES_URL`; set `SITE_URL` as a **build** variable to the exact production address displayed in your Cloudflare dashboard. Redeploy after changing it so canonical links, RSS, sitemap, and sharing metadata use the right origin. Without a configured origin, local builds use `http://localhost:4321` for feeds and maps and omit page canonical tags. `PUBLIC_LAUNCH_READY=false` keeps indexing disabled while the site remains accessible by URL.
+The verified production address is **https://parker-holzer-personal-website.holzerparker.workers.dev**. It is the default origin in `astro.config.mjs`, so canonical links, RSS, sitemap, structured data, and sharing metadata work without an extra dashboard variable. `SITE_URL` takes priority if set; update or remove any old dashboard value. Pages preview deployments can supply `CF_PAGES_URL`. For a custom domain, set `SITE_URL` as a **build** variable to that domain and redeploy. `PUBLIC_LAUNCH_READY=false` keeps indexing disabled while the site remains accessible by URL.
 
 ### Cloudflare Pages alternative
 
@@ -176,7 +176,7 @@ Still useful:
 - HearYe’s verified role, technology stack, results, screenshots, and links; details for any additional hands-on projects.
 - A personal GitHub profile URL, if you want one displayed.
 - Finished blog articles to replace or remove the labeled sample notes.
-- The final production hostname and a successful Cloudflare deployment.
+- An optional custom domain; the initial workers.dev deployment is live.
 
 Review the remaining sample/placeholder content, configure `SITE_URL`, and enable indexing with `PUBLIC_LAUNCH_READY=true` when ready. The real profile already has `profileIsPlaceholder: false`; the launch flag remains disabled by default. Check every page in light/dark themes, on a phone, and with keyboard navigation before launch.
 

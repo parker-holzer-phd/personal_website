@@ -4,9 +4,11 @@ import sitemap from '@astrojs/sitemap';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 
-const site = process.env.SITE_URL || process.env.CF_PAGES_URL;
+// Use the verified production origin; environment variables can override it.
+const site = process.env.SITE_URL || process.env.CF_PAGES_URL ||
+  'https://parker-holzer-personal-website.holzerparker.workers.dev';
 export default defineConfig({
-  site: site || 'http://localhost:4321',
+  site,
   output: 'static',
   trailingSlash: 'always',
   integrations: [sitemap({ filter: (page) => !page.endsWith('/404/') })],

@@ -2,6 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync } from 'node:fs';
 import { readFile, access } from 'node:fs/promises';
+import astroConfig from '../astro.config.mjs';
 
 test('drafts have no generated page, feed item, or sitemap entry', async () => {
   await assert.rejects(access('dist/blog/understanding-neural-networks/index.html'));
@@ -36,4 +37,22 @@ test('supplied resume PDF is available and resume metrics retain dates', async (
   const publications = await readFile('dist/publications/index.html', 'utf8');
   assert.equal([...publications.matchAll(/class="publication"/g)].length, 5);
   assert(!publications.includes('No verified publications'));
+});
+
+
+test('canonical, sharing, sitemap, and feed URLs use the configured production origin', async () => {
+  const origin = new URL(astroConfig.site).origin;
+  assert(!origin.includes('localhost'), 'A production origin must be configured');
+  for (const route of ['', 'about/', 'resume/', 'projects/', 'publications/', 'contact/']) {
+    const html = await readFile(`dist/${route}index.html`, 'utf8');
+    const expected = new URL(`/${route}`, origin).href;
+    assert(html.includes(`rel="canonical" href="${expected}"`), `Incorrect canonical for /${route}`);
+    assert(html.includes(`property="og:url" content="${expected}"`), `Incorrect sharing URL for /${route}`);
+    assert(html.includes(`property="og:image" content="${origin}/images/social-card.png"`));
+  }
+  for (const file of ['rss.xml', 'sitemap-index.xml', 'sitemap-0.xml', 'robots.txt']) {
+    const output = await readFile(`dist/${file}`, 'utf8');
+    assert(output.includes(origin), `Missing production origin in ${file}`);
+    assert(!output.includes('localhost'), `Development URL leaked into ${file}`);
+  }
 });
