@@ -9,6 +9,12 @@ doi: https://doi.org/10.1214/20-AOAS1406
 url: https://projecteuclid.org/journals/annals-of-applied-statistics/volume-15/issue-2/A-HermiteGaussian-based-exoplanet-radial-velocity-estimation-method/10.1214/20-AOAS1406.full
 code: https://github.com/parkerholzer/hgrv_method
 tags: [Astrostatistics, Exoplanets, Linear regression]
+image: "/images/projects/hgrv.webp"
+imageWidth: 800
+imageHeight: 400
+imageAlt: "Measured radial velocities of 51 Pegasi and a fitted periodic model as a function of orbital phase."
+imageCaption: "51 Pegasi radial-velocity results from the paper’s research repository."
+imageSource: "https://github.com/parkerholzer/hgrv_method/blob/master/51Pegasi/HGRV_51Peg_rvs.png"
 draft: false
 sample: false
 ---

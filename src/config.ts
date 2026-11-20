@@ -1,4 +1,4 @@
-// Public profile transcribed from ParkerHolzer_Resume.pdf, supplied November 18, 2026.
+// Public profile: supplied resume (November 18) and owner improvement notes (November 20, 2026).
 // Keep dated achievements dated; add only verified details. Never put secrets here.
 export interface ResumeEntry {
   title: string;
@@ -18,16 +18,18 @@ export const site = {
   profileIsPlaceholder: false,
   tagline: 'Principal Data Scientist. Agentic AI, production machine learning, and a foundation in statistics.',
   introduction: 'I’m Parker Holzer, a data scientist with a Ph.D. from Yale. I build production AI systems and translate machine learning research into practical products.',
-  biography: 'My work connects statistical research with production AI. I earned my Ph.D. in Data Science & Statistics at Yale University, where I studied exoplanet detection and collaborated on biomedical research with the Yale School of Medicine. Since then, I have developed AI agents, retrieval-augmented systems, and machine learning products at Spiff, Salesforce, and Reputation.com.',
+  biography: 'I’ve long loved math and using it to solve real-world problems. That curiosity led me to study mathematics and physics at the University of Utah and earn my Ph.D. in Data Science & Statistics at Yale University, where I studied exoplanet detection and collaborated on biomedical research with the Yale School of Medicine. Since then, I have developed AI agents, retrieval-augmented systems, and machine learning products at Spiff, Salesforce, and Reputation.com.',
   professionalInterests: 'My professional work spans agentic AI, retrieval-augmented generation, LLM evaluation, predictive modeling, and Bayesian statistics. I’m interested in turning rigorous methods into useful systems and helping teams bring those systems into production.',
-  personal: 'Beyond the work, here’s a glimpse of life with my family.',
+  personal: 'Outside of work, I have an awesome family and love spending time with them. You’ll also find me biking, playing basketball, or out in the garden.',
+  making: '3D printing has become a recent hobby: another way to take an idea and turn it into something useful. I sell some of the things I make through Parker Polymers on Etsy.',
+  shop: 'https://www.etsy.com/shop/ParkerPolymers',
   photos: {
     portrait: { alt: 'Parker Holzer smiling in a casual portrait.' },
     family: { alt: 'Parker Holzer with his family outdoors.', caption: 'With my family.' },
   },
   email: 'holzerparker@gmail.com',
   socials: {
-    github: '', // A personal profile URL was not included in the resume.
+    github: 'https://github.com/parkerholzer',
     linkedin: 'https://www.linkedin.com/in/parker-holzer-ph-d-417561a1/',
     scholar: 'https://scholar.google.com/citations?user=RqViEccAAAAJ&hl=en',
   },
@@ -85,7 +87,7 @@ export const site = {
       {
         title: 'B.S. in Mathematics & B.S. in Applied Physics — University of Utah',
         period: 'August 2011 – May 2017 · Salt Lake City, Utah',
-        description: 'Undergraduate degrees in mathematics and applied physics.',
+        description: 'Double majored in mathematics and applied physics while pursuing research with the Astronomy Department, exploring the connection between the chemical compositions of stars and their likelihood of having planetary companions.',
       },
     ] as ResumeEntry[],
     skills: [

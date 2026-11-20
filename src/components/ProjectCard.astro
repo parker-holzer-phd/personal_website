@@ -5,6 +5,6 @@ interface Props { project: CollectionEntry<'projects'>; }
 const { project } = Astro.props; const { data } = project;
 ---
 <article class="project-card" data-filter-item data-search={`${data.title} ${data.description} ${data.tags.join(' ')} ${data.technologies.join(' ')}`.toLowerCase()} data-tags={JSON.stringify(data.tags)}>
-  <a class="project-image-link" href={`/projects/${project.id}/`} tabindex="-1" aria-hidden="true">{data.image ? <img src={data.image} alt="" width="540" height="280" loading="lazy" /> : <ProjectVisual variant={data.visual} />}</a>
-  <div class="project-card-body"><div class="card-kicker"><span>{data.sample ? 'Sample project' : data.status}</span><span aria-hidden="true">↗</span></div><h3><a href={`/projects/${project.id}/`}>{data.title}</a></h3><p>{data.description}</p><div class="tags">{data.tags.map((tag) => <span>{tag}</span>)}</div></div>
+  <a class="project-image-link" href={`/projects/${project.id}/`} tabindex="-1" aria-hidden="true">{data.image ? <img src={data.image} alt="" width={data.imageWidth || 1200} height={data.imageHeight || 720} loading="lazy" /> : <ProjectVisual variant={data.visual} />}</a>
+  <div class="project-card-body"><div class="card-kicker"><span>{data.sample ? 'Sample project' : data.status}</span></div><h3><a href={`/projects/${project.id}/`}>{data.title}</a></h3><p>{data.description}</p><div class="tags">{data.tags.map((tag) => <span>{tag}</span>)}</div></div>
 </article>

@@ -36,7 +36,7 @@ For browser checks, install Chromium once with `npx playwright install chromium`
 
 ## Edit your identity and resume
 
-Edit `src/config.ts` for your name, initials, introduction, biography, interests, professional topics, resume sections, email, and verified social profile URLs. Empty contact fields do not render links. The current profile, career history, education, skills, awards, and mentorship are transcribed from the owner-supplied `ParkerHolzer_Resume.pdf`. The original PDF is included at `public/resume.pdf`, and the supplied email, LinkedIn, and Google Scholar links are active. The supplied portrait is used on the homepage and About page; the supplied family photo appears in the About page’s family section. Additional personal interests can be added in `src/config.ts`. A personal GitHub profile was not supplied, so no account is inferred. See `CONTENT_SOURCES.md` for publication and project sources.
+Edit `src/config.ts` for your name, initials, introduction, biography, interests, professional topics, resume sections, email, and verified social profile URLs. Empty contact fields do not render links. The current profile, career history, education, skills, awards, and mentorship are transcribed from the owner-supplied `ParkerHolzer_Resume.pdf`. The original PDF is included at `public/resume.pdf`, and the supplied email, LinkedIn, and Google Scholar links are active. The supplied portrait is used on the homepage and About page; the supplied family photo appears in the About page’s family section. The owner’s November 20 improvement notes add a lifelong interest in math, family, biking, basketball, gardening, 3D printing, the Parker Polymers Etsy shop, the older GitHub account, and the University of Utah astronomy research description. These are editable in `src/config.ts`. The original downloadable resume PDF is unchanged; the new education description appears in the web resume. See `CONTENT_SOURCES.md` for publication and project sources.
 
 Put your PDF at `public/resume.pdf`. The download button appears only when this file exists **at build time**. The web resume also has a print stylesheet. The homepage uses your supplied portrait. The About page includes both the portrait and family photo.
 
@@ -64,14 +64,19 @@ featured: true
 order: 1
 role: Your actual contribution
 technologies: [Python, R]
-visual: model
+image: /images/projects/my-project.webp
+imageAlt: Describe the actual project visualization.
+imageWidth: 1200
+imageHeight: 720
+imageCaption: Brief context for the image.
+imageSource: https://github.com/ACCOUNT/REPOSITORY
 links: []
 ---
 ```
 
-Write the problem, role, approach, technologies, results, and limitations below the frontmatter. Use verified links, for example `links: [{ label: Source code, url: 'https://github.com/ACCOUNT/REPOSITORY' }]` with your actual repository. Optional `image: /images/project.webp` and `imageAlt` replace the abstract card artwork. Keep images small, include accurate alternative text, and use approved screenshots. Available abstract `visual` values are `signal`, `model`, `package`, and `object`.
+Write the problem, role, approach, technologies, results, and limitations below the frontmatter. Use verified links, for example `links: [{ label: Source code, url: 'https://github.com/ACCOUNT/REPOSITORY' }]` with your actual repository. Use `image: /images/projects/project.webp`, descriptive `imageAlt`, intrinsic `imageWidth`/`imageHeight`, `imageCaption`, and an HTTP(S) `imageSource` for original project figures. Cards show the entire visualization without cropping; the detail page includes its caption and source. Keep images small and use approved screenshots. Published projects and publications require an image, alternative text, caption, and source URL; the content schema validates these before building. Draft/sample entries may still use the abstract `visual` options `signal`, `model`, `package`, and `object`.
 
-`draft` defaults to `true`, so unfinished entries stay out of listings and routes. `sample: true` keeps the sample label and prevents search indexing on the detail page. `featured: true` adds a project to the homepage, up to three in `order` sequence. The homepage features three verified entries: RepIQ, Hermite–Gaussian exoplanet research, and rvmethod. The HearYe and making-project entries remain labeled samples awaiting owner details. Business metrics come from the supplied resume; package installation counts retain their November 16, 2026 date. The research case study uses the published paper’s evaluation metrics.
+`draft` defaults to `true`, so unfinished entries stay out of listings and routes. `sample: true` keeps the sample label and prevents search indexing on the detail page. `featured: true` adds a project to the homepage, up to three in `order` sequence. The homepage features Hermite–Gaussian exoplanet research, Connecticut housing topic models, and rvmethod. RepIQ was removed from the project collection at the owner’s request; the resume retains the supplied career history. Ten entries cover rvmethod and all nine public repositories from the older GitHub account, including an explicitly attributed deployment-course fork. HearYe and the generic making entry are drafts awaiting real project content and images. Business metrics come from the supplied resume; package installation counts retain their November 16, 2026 date. The research case study uses the published paper’s evaluation metrics. Other historical analyses are described as exploratory, with no new performance claims.
 
 ## Publish an article
 
@@ -99,7 +104,7 @@ Use fenced code blocks with a language (`python`, `r`, `ts`, etc.) for syntax hi
 
 ## Add a publication
 
-Copy `src/content/publications/example.md` and supply verified title, description, authors, year, venue, abstract, and optional `doi`, `pdf`, `code`, or `url` values. Link fields require full HTTP(S) URLs; DOI values should use `https://doi.org/...`. Set **both** `draft: false` and `sample: false` for a real publication. Sample and draft publications never appear on the public list. Five real research papers linked in the supplied resume have been added, with verified authors, journal issue years, venues, DOI links, and short original summaries. Citation years use the journal issue year: the trophoblast subtypes paper is 2021 (online 2020), and the pregnancy-loss pathology paper is 2024 (online 2023).
+Copy `src/content/publications/example.md` and supply verified title, description, authors, year, venue, abstract, and optional `doi`, `pdf`, `code`, or `url` values. Link fields require full HTTP(S) URLs; DOI values should use `https://doi.org/...`. Set **both** `draft: false` and `sample: false` for a real publication. Sample and draft publications never appear on the public list. Five real research papers linked in the supplied resume have been added, with verified authors, journal issue years, venues, DOI links, and short original summaries. Each publication now includes a locally hosted original figure, alternative text, a short caption, and a source link. Images also appear on the homepage research cards. Citation years use the journal issue year: the trophoblast subtypes paper is 2021 (online 2020), and the pregnancy-loss pathology paper is 2024 (online 2023).
 
 ## Design and structure
 
@@ -108,7 +113,9 @@ Copy `src/content/publications/example.md` and supply verified title, descriptio
 - `src/content/`: Markdown articles, projects, and publication records.
 - `src/components/`: navigation, theme control, cards, diagrams, filters, and footer.
 - `src/layouts/BaseLayout.astro`: shared metadata and page shell.
-- `src/styles/global.css`: responsive layouts and light/dark design tokens.
+- `src/styles/global.css`: responsive layouts and light/dark design tokens, with a navy/teal hero, gold accents, teal page backgrounds, and illustrated cards.
+- `src/components/ResearchImage.astro`: shared publication imagery for the homepage and archive.
+- `public/images/projects/` and `public/images/publications/`: optimized original figures and two repository-structure diagrams; provenance is documented in `CONTENT_SOURCES.md`.
 - `src/pages/`: all requested routes, RSS, robots, and 404.
 - `public/`: original diagrams, favicon, social image, optional PDF, and Cloudflare response headers.
 
@@ -168,13 +175,12 @@ No paid service has been added. Check current provider limits and domain pricing
 
 ## Remaining owner information before public launch
 
-Already supplied: name, professional bio, career history, education, skills, awards, mentorship, resume PDF, email, LinkedIn, Google Scholar, three real project entries, and five research-paper citations.
+Already supplied: name, professional bio, career history, education and astronomy research details, skills, awards, mentorship, resume PDF, email, LinkedIn, Google Scholar, GitHub, personal interests, Etsy shop, project repositories, and five research-paper citations. The November 20 improvements are implemented without needing additional owner content.
 
 Still useful:
 
-- Any additional personal interests or family copy you would like to share.
 - HearYe’s verified role, technology stack, results, screenshots, and links; details for any additional hands-on projects.
-- A personal GitHub profile URL, if you want one displayed.
+- Optional product photos and a specific 3D-printing case study if you want a making project in the portfolio; the Etsy link is already on About.
 - Finished blog articles to replace or remove the labeled sample notes.
 - An optional custom domain; the initial workers.dev deployment is live.
 

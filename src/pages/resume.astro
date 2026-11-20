@@ -16,7 +16,7 @@ const sections = [
   <div class="container resume-container">
     <PageIntro eyebrow="Experience & perspective" title={site.fullName} description={site.tagline}>
       <p class="resume-contact">{site.location} · <a href={`mailto:${site.email}`}>{site.email}</a></p>
-      {hasPdf && <div class="button-row"><a class="button primary" href="/resume.pdf" download>Download resume PDF <span aria-hidden="true">↓</span></a></div>}
+      {hasPdf && <div class="button-row"><a class="button primary" href="/resume.pdf" download>Download resume PDF</a></div>}
     </PageIntro>
     <div class="content-section">
       {sections.map(({ label, entries }) => <section class="resume-section">

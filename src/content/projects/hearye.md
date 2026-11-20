@@ -2,7 +2,7 @@
 title: HearYe
 description: "Group announcements and web push notifications. A sample case study awaiting verified details."
 tags: [Software, Notifications]
-draft: false
+draft: true
 sample: true
 status: '[Owner to confirm]'
 featured: false

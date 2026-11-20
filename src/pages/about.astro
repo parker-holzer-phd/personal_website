@@ -4,7 +4,7 @@ import PageIntro from '../components/PageIntro.astro';
 import PersonalPhoto from '../components/PersonalPhoto.astro';
 import { site } from '../config';
 ---
-<BaseLayout title="About" description="Meet Parker Holzer: data scientist, researcher, and a glimpse of life with his family.">
+<BaseLayout title="About" description="Meet Parker Holzer: a lifelong math enthusiast, data scientist, researcher, and maker who loves family, biking, basketball, and gardening.">
   <div class="container">
     <div class="about-intro">
       <PageIntro eyebrow="The person behind the projects" title="A little about me." description={site.introduction} />
@@ -19,12 +19,12 @@ import { site } from '../config';
         <h2>What holds my attention</h2>
         <p>{site.professionalInterests} The portfolio is organized around these topics:</p>
         <ul>{site.expertise.map((item) => <li>{item}</li>)}</ul>
-        <a href="/contact/">Start a conversation →</a>
+        <a href="/contact/">Start a conversation</a>
       </div>
       <aside class="sidebar">
         <section><h2>Based in</h2><p>{site.location}</p></section>
         <section><h2>Education</h2>{site.resume.education.map((item) => <><p>{item.title}<br />{item.period}</p><p>{item.description}</p></>)}</section>
-        <section><h2>The longer version</h2><p>Experience, skills, and mentorship in one place.</p><a href="/resume/">Read the resume →</a></section>
+        <section><h2>The longer version</h2><p>Experience, skills, and mentorship in one place.</p><a href="/resume/">Read the resume</a></section>
       </aside>
     </div>
     <section class="family-section" aria-labelledby="family-title">
@@ -36,7 +36,10 @@ import { site } from '../config';
         <p class="eyebrow">Away from the screen</p>
         <h2 id="family-title">Life with my family.</h2>
         <p class="lede">{site.personal}</p>
-        <a class="text-link" href="/contact/">Say hello <span aria-hidden="true">↗</span></a>
+        <div class="interest-tags" aria-label="Personal interests"><span>Biking</span><span>Basketball</span><span>Gardening</span><span>3D printing</span></div>
+        <h3>From an idea to something you can hold.</h3>
+        <p>{site.making}</p>
+        <a class="button primary" href={site.shop}>Visit Parker Polymers on Etsy</a>
       </div>
     </section>
   </div>

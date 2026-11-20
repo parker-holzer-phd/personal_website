@@ -8,6 +8,12 @@ abstract: Evaluates an expanded placental pathology classification that includes
 doi: https://doi.org/10.1007/s43032-023-01344-3
 url: https://link.springer.com/article/10.1007/s43032-023-01344-3
 tags: [Biomedical research, Placenta, Statistics]
+image: "/images/publications/pathology.webp"
+imageWidth: 1200
+imageHeight: 476
+imageAlt: "Stacked density plot showing the distribution of placental pathology categories across gestational ages in the study."
+imageCaption: "Thompson, Holzer & Kliman (2024), Figure 5: pathology distributions across gestational age. CC BY 4.0; resized from the publisher’s original."
+imageSource: "https://link.springer.com/article/10.1007/s43032-023-01344-3/figures/5"
 draft: false
 sample: false
 ---

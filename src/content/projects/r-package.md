@@ -10,6 +10,12 @@ order: 3
 role: Package author
 technologies: [R, Linear regression, Statistical computing]
 visual: package
+image: "/images/projects/hgrv.webp"
+imageWidth: 800
+imageHeight: 400
+imageAlt: "Radial-velocity measurements of 51 Pegasi plotted against orbital phase with a fitted periodic curve."
+imageCaption: "51 Pegasi results from the HGRV research implemented in rvmethod."
+imageSource: "https://github.com/parkerholzer/hgrv_method/blob/master/51Pegasi/HGRV_51Peg_rvs.png"
 links:
   - label: CRAN package
     url: https://CRAN.R-project.org/package=rvmethod

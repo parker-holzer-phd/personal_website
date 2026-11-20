@@ -1,0 +1,11 @@
+---
+interface Props {
+  data: { image?: string; imageAlt?: string; imageCaption?: string; imageSource?: string; imageWidth?: number; imageHeight?: number };
+  compact?: boolean;
+}
+const { data, compact = false } = Astro.props;
+---
+{data.image && <figure class:list={['research-image', { compact }]}>
+  <div class="research-image-surface"><img src={data.image} alt={data.imageAlt || ''} width={data.imageWidth || 1200} height={data.imageHeight || 720} loading="lazy" decoding="async" /></div>
+  {!compact && data.imageCaption && <figcaption>{data.imageCaption}{data.imageSource && <> <a href={data.imageSource}>Figure source</a></>}</figcaption>}
+</figure>}

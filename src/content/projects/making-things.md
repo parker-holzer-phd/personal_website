@@ -2,7 +2,7 @@
 title: Making things
 description: "A sample space for a hands-on software, research, or 3D-printing project."
 tags: [Making, 3D printing]
-draft: false
+draft: true
 sample: true
 status: Sample / awaiting content
 featured: false

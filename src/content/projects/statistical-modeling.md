@@ -6,10 +6,16 @@ draft: false
 sample: false
 status: Published 2021
 featured: true
-order: 2
+order: 1
 role: Doctoral researcher and first author
 technologies: [R, Python, Linear regression, Hermite–Gaussian functions]
 visual: model
+image: "/images/projects/hgrv.webp"
+imageWidth: 800
+imageHeight: 400
+imageAlt: "Radial-velocity measurements of 51 Pegasi plotted against orbital phase with a fitted periodic curve."
+imageCaption: "Original 51 Pegasi radial-velocity results from the HGRV research repository."
+imageSource: "https://github.com/parkerholzer/hgrv_method/blob/master/51Pegasi/HGRV_51Peg_rvs.png"
 links:
   - label: Published paper
     url: https://doi.org/10.1214/20-AOAS1406

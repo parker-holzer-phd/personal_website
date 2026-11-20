@@ -9,6 +9,12 @@ doi: https://doi.org/10.1016/j.placenta.2021.04.010
 url: https://www.sciencedirect.com/science/article/pii/S0143400421001284
 pdf: https://medicine.yale.edu/download-file/1c3b79fb-e6ec-449d-9717-21554eb18b2a/
 tags: [Biomedical research, Placenta, Statistics]
+image: "/images/publications/twin.webp"
+imageWidth: 520
+imageHeight: 665
+imageAlt: "Bar chart comparing mean absolute differences in trophoblast inclusions between monozygotic, dizygotic, and unknown-zygosity twin pairs."
+imageCaption: "Katz, Holzer & Kliman (2021), Figure 4: differences between twin pairs by zygosity. Extracted from the author-hosted paper."
+imageSource: "https://medicine.yale.edu/download-file/1c3b79fb-e6ec-449d-9717-21554eb18b2a/"
 draft: false
 sample: false
 ---

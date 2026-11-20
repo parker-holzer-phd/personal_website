@@ -9,6 +9,12 @@ doi: https://doi.org/10.1016/j.placenta.2020.10.014
 url: https://www.sciencedirect.com/science/article/pii/S0143400420304082
 pdf: https://medicine.yale.edu/download-file/723d6ee5-33aa-4f5b-98e9-7307e6400c39/
 tags: [Biomedical research, Placenta, Statistics]
+image: "/images/publications/subtypes.webp"
+imageWidth: 1128
+imageHeight: 594
+imageAlt: "Overlapping regions showing relationships among four trophoblast-inclusion subtypes."
+imageCaption: "Original subtype diagram from my previous research website."
+imageSource: "https://github.com/parkerholzer/parkerholzer.github.io/blob/master/assets/img/TI_venndiag.png"
 draft: false
 sample: false
 ---
